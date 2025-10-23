@@ -1943,3 +1943,25 @@
     </script>
 </body>
 </html>
+
+<!-- Widget Chatbot n8n -->
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+  
+  createChat({
+    webhookUrl: 'http://n8n.147.93.179.219.nip.io/webhook/ff680eb5-09c8-4ecd-a50b-03effe7e8177/chat',
+    initialMessages: [
+      'Olá! 👋 Bem-vindo à Starpools!',
+      'Somos especialistas em piscinas exclusivas em alvenaria. Como posso ajudar você hoje?'
+    ],
+    i18n: {
+      en: {
+        title: 'Starpools - Atendimento',
+        subtitle: 'Pergunte sobre nossas piscinas!',
+        footer: '',
+        getStarted: 'Iniciar conversa',
+        inputPlaceholder: 'Digite sua mensagem...',
+      },
+    },
+  });
+</script>
