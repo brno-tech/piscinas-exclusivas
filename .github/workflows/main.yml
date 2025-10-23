@@ -1,0 +1,38 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          # Criar diretório do site se não existir
+          mkdir -p /srv/web/piscinas-exclusivas
+          
+          # Clonar/atualizar repositório
+          if [ -d "/srv/web/piscinas-exclusivas/.git" ]; then
+            cd /srv/web/piscinas-exclusivas
+            git pull origin main
+          else
+            git clone https://github.com/brno-tech/piscinas-exclusivas.git /srv/web/piscinas-exclusivas
+          fi
+          
+          # Ajustar permissões
+          chown -R www-data:www-data /srv/web/piscinas-exclusivas
+          chmod -R 755 /srv/web/piscinas-exclusivas
+          
+          echo "Deploy concluído com sucesso!"
