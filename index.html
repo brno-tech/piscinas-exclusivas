@@ -1916,7 +1916,7 @@
   </a>
   
   <!-- Chatbot -->
-  <button onclick="const iframe = document.querySelector('iframe[src*="n8n"]'); if(iframe) { iframe.style.display = iframe.style.display === 'none' ? 'block' : 'block'; const chat = iframe.contentWindow; if(chat) chat.postMessage({type: 'open'}, '*'); } else { alert('Chatbot ainda carregando...'); }" 
+  <button onclick="openN8nChat()"n8n"]'); if(iframe) { iframe.style.display = iframe.style.display === 'none' ? 'block' : 'block'; const chat = iframe.contentWindow; if(chat) chat.postMessage({type: 'open'}, '*'); } else { alert('Chatbot ainda carregando...'); }" 
           aria-label="Tire suas dúvidas" 
           style="background:#2563eb;color:white;width:70px;height:70px;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);cursor:pointer;transition:all 0.3s;">
     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
@@ -1924,6 +1924,7 @@
     </svg>
   </button>
 </div>
+<script src="chat-trigger.js"></script>
 </body>
 </html>
 
