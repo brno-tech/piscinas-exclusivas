@@ -1308,6 +1308,13 @@
     transform: rotate(90deg);
 }
 .chatbot-frame {
+    overflow: hidden;
+}
+.chatbot-frame iframe {
+    position: relative;
+    top: -100px;
+    height: calc(100% + 100px);
+}
 .chatbot-frame iframe {
     margin-top: -80px;
     height: calc(100% + 80px);
