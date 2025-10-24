@@ -1308,6 +1308,22 @@
     transform: rotate(90deg);
 }
 .chatbot-frame {
+.chatbot-frame iframe {
+    margin-top: -80px;
+    height: calc(100% + 80px);
+}
+    position: relative;
+}
+.chatbot-frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: white;
+    z-index: 1;
+    pointer-events: none;
     flex: 1;
     background: #f8fafc;
 }
@@ -1803,6 +1819,17 @@
     <!-- Back to Top -->
 
     <script>
+document.getElementById("chatbotIframe").addEventListener("load", function() {
+    try {
+        const iframe = this;
+        const style = iframe.contentDocument.createElement("style");
+        style.textContent = `
+            [class*="ChatMessages"] > div:first-child { display: none !important; }
+            [class*="initialMessage"] { display: none !important; }
+        `;
+        iframe.contentDocument.head.appendChild(style);
+    } catch(e) {}
+});
         // Menu mobile toggle
         document.querySelector('.menu-toggle').addEventListener('click', function() {
             document.querySelector('.nav-menu').classList.toggle('active');
@@ -1984,8 +2011,30 @@
 }
 </style>
 <script>
+document.getElementById("chatbotIframe").addEventListener("load", function() {
+    try {
+        const iframe = this;
+        const style = iframe.contentDocument.createElement("style");
+        style.textContent = `
+            [class*="ChatMessages"] > div:first-child { display: none !important; }
+            [class*="initialMessage"] { display: none !important; }
+        `;
+        iframe.contentDocument.head.appendChild(style);
+    } catch(e) {}
+});
 </script>
 <script>
+document.getElementById("chatbotIframe").addEventListener("load", function() {
+    try {
+        const iframe = this;
+        const style = iframe.contentDocument.createElement("style");
+        style.textContent = `
+            [class*="ChatMessages"] > div:first-child { display: none !important; }
+            [class*="initialMessage"] { display: none !important; }
+        `;
+        iframe.contentDocument.head.appendChild(style);
+    } catch(e) {}
+});
 function openN8nChat() {
   // Rolar até o final da página onde o chat está
   window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -2029,6 +2078,17 @@ function openN8nChat() {
     </div>
 </div>
 <script>
+document.getElementById("chatbotIframe").addEventListener("load", function() {
+    try {
+        const iframe = this;
+        const style = iframe.contentDocument.createElement("style");
+        style.textContent = `
+            [class*="ChatMessages"] > div:first-child { display: none !important; }
+            [class*="initialMessage"] { display: none !important; }
+        `;
+        iframe.contentDocument.head.appendChild(style);
+    } catch(e) {}
+});
 function openN8nChat() {
     document.getElementById("chatbotContainer").classList.add("active");
 }
