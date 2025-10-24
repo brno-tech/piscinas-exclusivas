@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Starpools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --azul-profundo: #0a2540;
+            --azul-agua: #2dd4bf;
+            --cinza-claro: #f8fafc;
+            --cinza-medio: #64748b;
+            --branco: #ffffff;
+            --preto: #0f172a;
+        }
+
+        body {
+            background: var(--cinza-claro);
+            color: var(--preto);
+            line-height: 1.6;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            background: var(--azul-profundo);
+            color: var(--branco);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .admin-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-main {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .admin-sidebar {
+            background: var(--branco);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .admin-sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--azul-profundo);
+            border-bottom: 2px solid var(--azul-agua);
+            padding-bottom: 0.5rem;
+        }
+
+        .admin-menu {
+            list-style: none;
+        }
+
+        .admin-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--cinza-medio);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: var(--azul-agua);
+            color: var(--azul-profundo);
+        }
+
+        .admin-content {
+            background: var(--branco);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-title {
+            color: var(--azul-profundo);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--cinza-claro);
+        }
+
+        .editable-group {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--cinza-claro);
+            border-radius: 8px;
+            background: #fafbfc;
+        }
+
+        .editable-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--azul-profundo);
+            font-weight: 600;
+        }
+
+        .editable {
+            width: 100%;
+            padding: 1rem;
+            border: 2px dashed var(--cinza-medio);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 50px;
+        }
+
+        .editable:hover {
+            border-color: var(--azul-agua);
+            background: var(--cinza-claro);
+        }
+
+        .editable.editing {
+            border: 2px solid var(--azul-agua);
+            background: #f0f9ff;
+        }
+
+        .image-editor {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+
+        .image-preview {
+            max-width: 300px;
+            max-height: 200px;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            display: block;
+        }
+
+        .image-upload-btn {
+            background: var(--azul-profundo);
+            color: var(--branco);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem 0;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .image-upload-btn:hover {
+            background: var(--azul-agua);
+            color: var(--azul-profundo);
+        }
+
+        .image-url-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--cinza-medio);
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background: var(--azul-profundo);
+            color: var(--branco);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--azul-agua);
+            color: var(--azul-profundo);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--azul-agua);
+            color: var(--azul-profundo);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .action-buttons {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--cinza-claro);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-modal.active {
+            display: flex;
+        }
+
+        .login-form {
+            background: var(--branco);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--azul-profundo);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--cinza-medio);
+            border-radius: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--azul-agua);
+            color: var(--azul-profundo);
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--branco);
+            color: var(--branco);
+        }
+
+        .logout-btn:hover {
+            background: var(--branco);
+            color: var(--azul-profundo);
+        }
+
+        .download-info {
+            background: #f0f9ff;
+            border: 2px solid var(--azul-agua);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .download-info h4 {
+            color: var(--azul-profundo);
+            margin-bottom: 1rem;
+        }
+
+        .download-steps {
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .download-steps li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .download-steps li:before {
+            content: "➤";
+            position: absolute;
+            left: 0;
+            color: var(--azul-agua);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--azul-agua);
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .gallery-item.active {
+            border-color: var(--azul-agua);
+            box-shadow: 0 0 0 2px var(--azul-agua);
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal de Login -->
+    <div id="loginModal" class="login-modal active">
+        <div class="login-form">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--azul-profundo);">Acesso Administrativo</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Entrar</button>
+            </form>
+            <p style="margin-top: 1rem; text-align: center; color: var(--cinza-medio); font-size: 0.9rem;">
+                Dica: use "admin" para usuário e senha
+            </p>
+        </div>
+    </div>
+
+    <!-- Notificação -->
+    <div id="notification" class="notification">
+        Alterações salvas com sucesso!
+    </div>
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="admin-nav">
+            <div class="admin-logo">
+                <i class="fas fa-water"></i>
+                STARPOOLS - ADMIN
+            </div>
+            <button id="logoutBtn" class="btn logout-btn" style="display: none;">Sair</button>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="admin-container">
+        <div class="admin-main">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar">
+                <h3>Conteúdo do Site</h3>
+                <ul class="admin-menu">
+                    <li><a href="#" class="active" data-section="hero">Hero Section</a></li>
+                    <li><a href="#" data-section="diferenciais">Diferenciais</a></li>
+                    <li><a href="#" data-section="servicos">Serviços</a></li>
+                    <li><a href="#" data-section="acabamentos">Acabamentos</a></li>
+                    <li><a href="#" data-section="sobre">Sobre</a></li>
+                    <li><a href="#" data-section="galeria">Galeria</a></li>
+                    <li><a href="#" data-section="depoimentos">Depoimentos</a></li>
+                    <li><a href="#" data-section="contato">Contato</a></li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">Exportar</h3>
+                <ul class="admin-menu">
+                    <li><a href="#" data-section="download">Download Site</a></li>
+                </ul>
+            </aside>
+
+            <!-- Conteúdo -->
+            <main class="admin-content">
+                <!-- Hero Section -->
+                <div id="hero-section" class="content-section active">
+                    <h2 class="section-title">Hero Section</h2>
+                    
+                    <div class="editable-group">
+                        <label>Título Principal</label>
+                        <div class="editable" data-target="hero-title">Piscinas Exclusivas em Alvenaria</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Subtítulo</label>
+                        <div class="editable" data-target="hero-subtitle">Projetos personalizados em alvenaria estrutural e concreto armado. Acabamentos premium em azulejo, pastilha e revestimento americano (pool plastering).</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Texto Botão WhatsApp</label>
+                        <div class="editable" data-target="hero-btn-whatsapp">Solicitar Orçamento</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Texto Botão Galeria</label>
+                        <div class="editable" data-target="hero-btn-galeria">Ver Projetos</div>
+                    </div>
+                </div>
+
+                <!-- Diferenciais Section -->
+                <div id="diferenciais-section" class="content-section">
+                    <h2 class="section-title">Seção Diferenciais</h2>
+                    
+                    <div class="editable-group">
+                        <label>Título da Seção</label>
+                        <div class="editable" data-target="diferenciais-title">Excelência em Cada Projeto</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Descrição da Seção</label>
+                        <div class="editable" data-target="diferenciais-desc">Construímos piscinas com técnicas avançadas e materiais de primeira linha</div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem 0; color: var(--azul-profundo);">Cards de Diferenciais</h3>
+
+                    <div class="editable-group">
+                        <label>Card 1 - Título</label>
+                        <div class="editable" data-target="card1-title">Alvenaria Estrutural</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Card 1 - Descrição</label>
+                        <div class="editable" data-target="card1-desc">Utilizamos alvenaria estrutural e concreto armado para garantir máxima durabilidade e resistência em todas as nossas piscinas.</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Card 2 - Título</label>
+                        <div class="editable" data-target="card2-title">Projetos Personalizados</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Card 2 - Descrição</label>
+                        <div class="editable" data-target="card2-desc">Cada piscina é única. Desenvolvemos projetos exclusivos adaptados ao seu espaço, estilo e necessidades específicas.</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Card 3 - Título</label>
+                        <div class="editable" data-target="card3-title">Acabamentos Premium</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Card 3 - Descrição</label>
+                        <div class="editable" data-target="card3-desc">Oferecemos acabamentos em azulejo, pastilha de vidro e revestimento monolítico americano (pool plastering).</div>
+                    </div>
+                </div>
+
+                <!-- Serviços Section -->
+                <div id="servicos-section" class="content-section">
+                    <h2 class="section-title">Serviços - Imagens</h2>
+                    
+                    <div class="editable-group">
+                        <label>Serviço 1 - Construção de Piscinas</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="servico1-preview" class="image-preview" src="" alt="Preview Serviço 1" style="display: none;">
+                            </div>
+                            <input type="file" id="servico1-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('servico1-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="servico1-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('servico1', 'servico1-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Serviço 2 - Reformas Completas</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="servico2-preview" class="image-preview" src="" alt="Preview Serviço 2" style="display: none;">
+                            </div>
+                            <input type="file" id="servico2-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('servico2-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="servico2-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('servico2', 'servico2-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Serviço 3 - Projetos Personalizados</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="servico3-preview" class="image-preview" src="" alt="Preview Serviço 3" style="display: none;">
+                            </div>
+                            <input type="file" id="servico3-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('servico3-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="servico3-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('servico3', 'servico3-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acabamentos Section -->
+                <div id="acabamentos-section" class="content-section">
+                    <h2 class="section-title">Seção Acabamentos - Imagens</h2>
+                    
+                    <div class="editable-group">
+                        <label>Título da Seção</label>
+                        <div class="editable" data-target="acabamentos-title">Revestimentos de Alta Qualidade</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Descrição da Seção</label>
+                        <div class="editable" data-target="acabamentos-desc">Oferecemos as melhores opções de acabamento para sua piscina</div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem 0; color: var(--azul-profundo);">Imagens dos Acabamentos</h3>
+
+                    <div class="editable-group">
+                        <label>Acabamento 1 - Azulejo</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="acabamento1-preview" class="image-preview" src="" alt="Preview Acabamento 1" style="display: none;">
+                            </div>
+                            <input type="file" id="acabamento1-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('acabamento1-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="acabamento1-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('acabamento1', 'acabamento1-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Acabamento 2 - Pastilha de Vidro</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="acabamento2-preview" class="image-preview" src="" alt="Preview Acabamento 2" style="display: none;">
+                            </div>
+                            <input type="file" id="acabamento2-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('acabamento2-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="acabamento2-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('acabamento2', 'acabamento2-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Acabamento 3 - Pool Plastering</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="acabamento3-preview" class="image-preview" src="" alt="Preview Acabamento 3" style="display: none;">
+                            </div>
+                            <input type="file" id="acabamento3-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('acabamento3-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="acabamento3-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('acabamento3', 'acabamento3-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sobre Section -->
+                <div id="sobre-section" class="content-section">
+                    <h2 class="section-title">Seção Sobre - Imagem</h2>
+                    
+                    <div class="editable-group">
+                        <label>Título da Seção</label>
+                        <div class="editable" data-target="sobre-title">Especialistas em Piscinas de Alvenaria</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Primeiro Parágrafo</label>
+                        <div class="editable" data-target="sobre-p1">Na Starpools, somos especialistas em criar projetos e construir piscinas exclusivas em alvenaria estrutural e concreto armado, garantindo qualidade e sofisticação em cada detalhe.</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Segundo Parágrafo</label>
+                        <div class="editable" data-target="sobre-p2">Nossa equipe de arquitetos e construtores altamente qualificados trabalha com dedicação para transformar seu sonho em realidade, unindo técnica, estética e funcionalidade.</div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem 0; color: var(--azul-profundo);">Imagem da Seção Sobre</h3>
+
+                    <div class="editable-group">
+                        <label>Imagem Principal da Seção Sobre</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="sobre-preview" class="image-preview" src="" alt="Preview Sobre" style="display: none;">
+                            </div>
+                            <input type="file" id="sobre-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('sobre-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="sobre-url" placeholder="Cole URL da imagem aqui...">
+                            <button type="button" class="btn btn-primary" onclick="updateImage('sobre', 'sobre-img')">
+                                Aplicar Imagem
+                            </button>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem 0; color: var(--azul-profundo);">Estatísticas</h3>
+
+                    <div class="editable-group">
+                        <label>Estatística 1 - Número</label>
+                        <div class="editable" data-target="stat1-number">150+</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 1 - Texto</label>
+                        <div class="editable" data-target="stat1-text">Clientes Satisfeitos</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 2 - Número</label>
+                        <div class="editable" data-target="stat2-number">200+</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 2 - Texto</label>
+                        <div class="editable" data-target="stat2-text">Projetos Concluídos</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 3 - Número</label>
+                        <div class="editable" data-target="stat3-number">100%</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 3 - Texto</label>
+                        <div class="editable" data-target="stat3-text">Alvenaria e Concreto</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 4 - Número</label>
+                        <div class="editable" data-target="stat4-number">10+</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Estatística 4 - Texto</label>
+                        <div class="editable" data-target="stat4-text">Anos de Experiência</div>
+                    </div>
+                </div>
+
+                <!-- Galeria Section -->
+                <div id="galeria-section" class="content-section">
+                    <h2 class="section-title">Galeria - Gerenciar Imagens</h2>
+                    
+                    <div class="editable-group">
+                        <label>Adicionar Nova Imagem à Galeria</label>
+                        <div class="image-editor">
+                            <div class="image-preview-container">
+                                <img id="galeria-preview" class="image-preview" src="" alt="Preview Galeria" style="display: none;">
+                            </div>
+                            <input type="file" id="galeria-upload" accept="image/*" style="display: none;">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('galeria-upload').click()">
+                                📷 Upload de Imagem
+                            </button>
+                            <input type="text" class="image-url-input" id="galeria-url" placeholder="Cole URL da imagem para a galeria...">
+                            <button type="button" class="btn btn-primary" onclick="addToGallery()">
+                                Adicionar à Galeria
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Imagens Atuais da Galeria</label>
+                        <div class="image-gallery" id="current-gallery">
+                            <!-- As imagens atuais serão carregadas aqui -->
+                        </div>
+                        <button type="button" class="btn" onclick="clearGallery()" style="background: #ef4444; color: white;">
+                            🗑️ Limpar Galeria
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Depoimentos Section -->
+                <div id="depoimentos-section" class="content-section">
+                    <h2 class="section-title">Seção Depoimentos</h2>
+                    
+                    <div class="editable-group">
+                        <label>Título da Seção</label>
+                        <div class="editable" data-target="depoimentos-title">O Que Nossos Clientes Dizem</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Descrição da Seção</label>
+                        <div class="editable" data-target="depoimentos-desc">Confiança e qualidade comprovadas</div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem 0; color: var(--azul-profundo);">Depoimentos</h3>
+
+                    <div class="editable-group">
+                        <label>Depoimento 1 - Texto</label>
+                        <div class="editable" data-target="depoimento1-texto">A Starpools superou nossas expectativas com a piscina, ficou simplesmente maravilhosa! O acabamento em pastilha ficou perfeito. Recomendo.</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 1 - Nome</label>
+                        <div class="editable" data-target="depoimento1-nome">Ana Maria</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 1 - Cidade</label>
+                        <div class="editable" data-target="depoimento1-cidade">Belo Horizonte</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 2 - Texto</label>
+                        <div class="editable" data-target="depoimento2-texto">O atendimento da Starpools foi excelente e a piscina, um sonho realizado. Estamos muito felizes com o resultado final, é realmente um projeto de qualidade!</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 2 - Nome</label>
+                        <div class="editable" data-target="depoimento2-nome">Carlos Silva</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 2 - Cidade</label>
+                        <div class="editable" data-target="depoimento2-cidade">Nova Lima</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 3 - Texto</label>
+                        <div class="editable" data-target="depoimento3-texto">Profissionais extremamente competentes. A construção foi impecável e o revestimento americano ficou lindo. Melhor investimento que fizemos!</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 3 - Nome</label>
+                        <div class="editable" data-target="depoimento3-nome">Mariana Pinto</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Depoimento 3 - Cidade</label>
+                        <div class="editable" data-target="depoimento3-cidade">Contagem</div>
+                    </div>
+                </div>
+
+                <!-- Contato Section -->
+                <div id="contato-section" class="content-section">
+                    <h2 class="section-title">Seção Contato</h2>
+                    
+                    <div class="editable-group">
+                        <label>Título da Seção</label>
+                        <div class="editable" data-target="contato-title">Vamos Conversar Sobre Seu Projeto</div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem 0; color: var(--azul-profundo);">Informações de Contato</h3>
+
+                    <div class="editable-group">
+                        <label>WhatsApp - Número</label>
+                        <div class="editable" data-target="contato-whatsapp">+55 31 99856-2030</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>E-mail</label>
+                        <div class="editable" data-target="contato-email">contato@starpools.com</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Localização - Cidade</label>
+                        <div class="editable" data-target="contato-cidade">Belo Horizonte - MG</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Localização - Região</label>
+                        <div class="editable" data-target="contato-regiao">Atendemos toda região metropolitana</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Horário - Dias Úteis</label>
+                        <div class="editable" data-target="contato-dias-uteis">Segunda a Sexta: 8h às 18h</div>
+                    </div>
+
+                    <div class="editable-group">
+                        <label>Horário - Sábado</label>
+                        <div class="editable" data-target="contato-sabado">Sábado: 8h às 12h</div>
+                    </div>
+                </div>
+
+                <!-- Download Section -->
+                <div id="download-section" class="content-section">
+                    <h2 class="section-title">Download do Site Atualizado</h2>
+                    
+                    <div class="download-info">
+                        <h4>📋 Como atualizar seu site:</h4>
+                        <ol class="download-steps">
+                            <li>Faça todas as edições necessárias nas seções acima</li>
+                            <li>Clique no botão "Gerar Site Atualizado" abaixo</li>
+                            <li>Será feito download do arquivo <strong>index-atualizado.html</strong></li>
+                            <li>Substitua o arquivo <strong>index.html</strong> atual pelo novo arquivo</li>
+                            <li>Seu site estará atualizado!</li>
+                        </ol>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="generateSite" class="btn btn-success">🚀 Gerar Site Atualizado</button>
+                        <button id="previewSite" class="btn">👁️ Visualizar Site</button>
+                        <button id="backupSite" class="btn">📦 Backup do Site</button>
+                    </div>
+                </div>
+
+                <!-- Ações Gerais -->
+                <div class="action-buttons">
+                    <button id="saveChanges" class="btn btn-primary">💾 Salvar Alterações</button>
+                    <button id="resetChanges" class="btn">🔄 Restaurar Original</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const loginModal = document.getElementById('loginModal');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const notification = document.getElementById('notification');
+        const saveBtn = document.getElementById('saveChanges');
+        const resetBtn = document.getElementById('resetChanges');
+        const generateBtn = document.getElementById('generateSite');
+        const previewBtn = document.getElementById('previewSite');
+        const backupBtn = document.getElementById('backupSite');
+        const menuLinks = document.querySelectorAll('.admin-menu a');
+        const contentSections = document.querySelectorAll('.content-section');
+        const editables = document.querySelectorAll('.editable');
+
+        // Estado
+        let isLoggedIn = false;
+        let currentEditing = null;
+        let changes = {
+            text: {},
+            images: {},
+            gallery: []
+        };
+
+        // Template do site (será carregado via fetch)
+        let siteTemplate = '';
+
+        // Inicializar
+        checkLogin();
+        loadSiteTemplate();
+        setupImageUploads();
+        loadCurrentGallery();
+
+        // Event Listeners
+        loginForm.addEventListener('submit', handleLogin);
+        logoutBtn.addEventListener('click', handleLogout);
+        saveBtn.addEventListener('click', saveChanges);
+        resetBtn.addEventListener('click', resetChanges);
+        generateBtn.addEventListener('click', generateUpdatedSite);
+        previewBtn.addEventListener('click', previewSite);
+        backupBtn.addEventListener('click', backupSite);
+
+        // Navegação do menu
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                showSection(section);
+                
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Elementos editáveis
+        editables.forEach(editable => {
+            editable.addEventListener('click', () => {
+                if (!isLoggedIn) return;
+                startEditing(editable);
+            });
+        });
+
+        // Funções de Login
+        function checkLogin() {
+            const saved = localStorage.getItem('starpools_admin');
+            if (saved === 'logged_in') {
+                isLoggedIn = true;
+                showAdminPanel();
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'admin' && password === 'admin') {
+                isLoggedIn = true;
+                localStorage.setItem('starpools_admin', 'logged_in');
+                loginModal.classList.remove('active');
+                showAdminPanel();
+                showNotification('Login realizado com sucesso!');
+            } else {
+                showNotification('Usuário ou senha incorretos!', true);
+            }
+        }
+
+        function handleLogout() {
+            isLoggedIn = false;
+            localStorage.removeItem('starpools_admin');
+            loginModal.classList.add('active');
+            hideAdminPanel();
+            showNotification('Logout realizado!');
+        }
+
+        function showAdminPanel() {
+            logoutBtn.style.display = 'block';
+            editables.forEach(el => {
+                el.style.cursor = 'pointer';
+            });
+        }
+
+        function hideAdminPanel() {
+            logoutBtn.style.display = 'none';
+            editables.forEach(el => {
+                el.style.cursor = 'default';
+            });
+        }
+
+        function showSection(sectionId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+        }
+
+        // Funções de Edição de Texto
+        function startEditing(editor) {
+            if (currentEditing) return;
+
+            currentEditing = editor;
+            editor.classList.add('editing');
+            const currentContent = editor.textContent;
+
+            editor.innerHTML = `
+                <textarea style="width: 100%; height: 100px; padding: 10px; border: 1px solid #2dd4bf; border-radius: 5px;">${currentContent}</textarea>
+                <div style="margin-top: 10px;">
+                    <button onclick="finishEditing(true)" style="background: #2dd4bf; color: #0a2540; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">Salvar</button>
+                    <button onclick="finishEditing(false)" style="background: #64748b; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Cancelar</button>
+                </div>
+            `;
+        }
+
+        function finishEditing(save) {
+            if (!currentEditing) return;
+
+            const textarea = currentEditing.querySelector('textarea');
+            
+            if (save && textarea) {
+                const newContent = textarea.value;
+                const target = currentEditing.getAttribute('data-target');
+                
+                currentEditing.textContent = newContent;
+                changes.text[target] = newContent;
+                
+                showNotification(`"${target}" atualizado`);
+            }
+
+            currentEditing.classList.remove('editing');
+            currentEditing = null;
+        }
+
+        // Funções de Upload de Imagens
+        function setupImageUploads() {
+            // Configurar upload para serviços
+            for (let i = 1; i <= 3; i++) {
+                const uploadInput = document.getElementById(`servico${i}-upload`);
+                const preview = document.getElementById(`servico${i}-preview`);
+                
+                uploadInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            preview.src = event.target.result;
+                            preview.style.display = 'block';
+                            document.getElementById(`servico${i}-url`).value = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Configurar upload para acabamentos
+            for (let i = 1; i <= 3; i++) {
+                const uploadInput = document.getElementById(`acabamento${i}-upload`);
+                const preview = document.getElementById(`acabamento${i}-preview`);
+                
+                uploadInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            preview.src = event.target.result;
+                            preview.style.display = 'block';
+                            document.getElementById(`acabamento${i}-url`).value = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Configurar upload para sobre
+            const sobreUpload = document.getElementById('sobre-upload');
+            const sobrePreview = document.getElementById('sobre-preview');
+            
+            sobreUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        sobrePreview.src = event.target.result;
+                        sobrePreview.style.display = 'block';
+                        document.getElementById('sobre-url').value = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Configurar upload para galeria
+            const galeriaUpload = document.getElementById('galeria-upload');
+            const galeriaPreview = document.getElementById('galeria-preview');
+            
+            galeriaUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        galeriaPreview.src = event.target.result;
+                        galeriaPreview.style.display = 'block';
+                        document.getElementById('galeria-url').value = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function updateImage(elementId, targetId) {
+            const urlInput = document.getElementById(`${elementId}-url`);
+            const imageUrl = urlInput.value.trim();
+            
+            if (!imageUrl) {
+                showNotification('Por favor, faça upload ou cole uma URL de imagem!', true);
+                return;
+            }
+
+            changes.images[targetId] = imageUrl;
+            
+            // Atualizar preview
+            const preview = document.getElementById(`${elementId}-preview`);
+            if (preview) {
+                preview.src = imageUrl;
+                preview.style.display = 'block';
+            }
+            
+            showNotification(`Imagem ${elementId} atualizada`);
+        }
+
+        function addToGallery() {
+            const urlInput = document.getElementById('galeria-url');
+            const imageUrl = urlInput.value.trim();
+            
+            if (!imageUrl) {
+                showNotification('Por favor, faça upload ou cole uma URL de imagem!', true);
+                return;
+            }
+
+            changes.gallery.push(imageUrl);
+            loadCurrentGallery();
+            
+            urlInput.value = '';
+            document.getElementById('galeria-preview').style.display = 'none';
+            showNotification('Imagem adicionada à galeria!');
+        }
+
+        function loadCurrentGallery() {
+            const galleryContainer = document.getElementById('current-gallery');
+            galleryContainer.innerHTML = '';
+            
+            changes.gallery.forEach((imageUrl, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${imageUrl}" alt="Galeria ${index + 1}">
+                    <button onclick="removeFromGallery(${index})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px;">×</button>
+                `;
+                galleryContainer.appendChild(galleryItem);
+            });
+        }
+
+        function removeFromGallery(index) {
+            changes.gallery.splice(index, 1);
+            loadCurrentGallery();
+            showNotification('Imagem removida da galeria!');
+        }
+
+        function clearGallery() {
+            if (confirm('Tem certeza que deseja limpar toda a galeria?')) {
+                changes.gallery = [];
+                loadCurrentGallery();
+                showNotification('Galeria limpa!');
+            }
+        }
+
+        // Funções Principais
+        async function loadSiteTemplate() {
+            try {
+                const response = await fetch('./index.html');
+                siteTemplate = await response.text();
+                showNotification('Template do site carregado!');
+            } catch (error) {
+                showNotification('Erro ao carregar template do site', true);
+                console.error('Erro:', error);
+            }
+        }
+
+        function saveChanges() {
+            localStorage.setItem('starpools_changes', JSON.stringify(changes));
+            showNotification('Alterações salvas localmente!');
+        }
+
+        function resetChanges() {
+            if (confirm('Restaurar conteúdo original? Isso apagará todas as alterações não salvas.')) {
+                changes = {
+                    text: {},
+                    images: {},
+                    gallery: []
+                };
+                
+                // Restaurar valores padrão dos textos
+                const defaultTexts = {
+                    // Hero
+                    'hero-title': 'Piscinas Exclusivas em Alvenaria',
+                    'hero-subtitle': 'Projetos personalizados em alvenaria estrutural e concreto armado. Acabamentos premium em azulejo, pastilha e revestimento americano (pool plastering).',
+                    'hero-btn-whatsapp': 'Solicitar Orçamento',
+                    'hero-btn-galeria': 'Ver Projetos',
+                    
+                    // Diferenciais
+                    'diferenciais-title': 'Excelência em Cada Projeto',
+                    'diferenciais-desc': 'Construímos piscinas com técnicas avançadas e materiais de primeira linha',
+                    'card1-title': 'Alvenaria Estrutural',
+                    'card1-desc': 'Utilizamos alvenaria estrutural e concreto armado para garantir máxima durabilidade e resistência em todas as nossas piscinas.',
+                    'card2-title': 'Projetos Personalizados',
+                    'card2-desc': 'Cada piscina é única. Desenvolvemos projetos exclusivos adaptados ao seu espaço, estilo e necessidades específicas.',
+                    'card3-title': 'Acabamentos Premium',
+                    'card3-desc': 'Oferecemos acabamentos em azulejo, pastilha de vidro e revestimento monolítico americano (pool plastering).',
+                    
+                    // Acabamentos
+                    'acabamentos-title': 'Revestimentos de Alta Qualidade',
+                    'acabamentos-desc': 'Oferecemos as melhores opções de acabamento para sua piscina',
+                    
+                    // Sobre
+                    'sobre-title': 'Especialistas em Piscinas de Alvenaria',
+                    'sobre-p1': 'Na Starpools, somos especialistas em criar projetos e construir piscinas exclusivas em alvenaria estrutural e concreto armado, garantindo qualidade e sofisticação em cada detalhe.',
+                    'sobre-p2': 'Nossa equipe de arquitetos e construtores altamente qualificados trabalha com dedicação para transformar seu sonho em realidade, unindo técnica, estética e funcionalidade.',
+                    'stat1-number': '150+',
+                    'stat1-text': 'Clientes Satisfeitos',
+                    'stat2-number': '200+',
+                    'stat2-text': 'Projetos Concluídos',
+                    'stat3-number': '100%',
+                    'stat3-text': 'Alvenaria e Concreto',
+                    'stat4-number': '10+',
+                    'stat4-text': 'Anos de Experiência',
+                    
+                    // Depoimentos
+                    'depoimentos-title': 'O Que Nossos Clientes Dizem',
+                    'depoimentos-desc': 'Confiança e qualidade comprovadas',
+                    'depoimento1-texto': 'A Starpools superou nossas expectativas com a piscina, ficou simplesmente maravilhosa! O acabamento em pastilha ficou perfeito. Recomendo.',
+                    'depoimento1-nome': 'Ana Maria',
+                    'depoimento1-cidade': 'Belo Horizonte',
+                    'depoimento2-texto': 'O atendimento da Starpools foi excelente e a piscina, um sonho realizado. Estamos muito felizes com o resultado final, é realmente um projeto de qualidade!',
+                    'depoimento2-nome': 'Carlos Silva',
+                    'depoimento2-cidade': 'Nova Lima',
+                    'depoimento3-texto': 'Profissionais extremamente competentes. A construção foi impecável e o revestimento americano ficou lindo. Melhor investimento que fizemos!',
+                    'depoimento3-nome': 'Mariana Pinto',
+                    'depoimento3-cidade': 'Contagem',
+                    
+                    // Contato
+                    'contato-title': 'Vamos Conversar Sobre Seu Projeto',
+                    'contato-whatsapp': '+55 31 99856-2030',
+                    'contato-email': 'contato@starpools.com',
+                    'contato-cidade': 'Belo Horizonte - MG',
+                    'contato-regiao': 'Atendemos toda região metropolitana',
+                    'contato-dias-uteis': 'Segunda a Sexta: 8h às 18h',
+                    'contato-sabado': 'Sábado: 8h às 12h'
+                };
+                
+                editables.forEach(editable => {
+                    const target = editable.getAttribute('data-target');
+                    if (defaultTexts[target]) {
+                        editable.textContent = defaultTexts[target];
+                    }
+                });
+                
+                // Limpar previews de imagens
+                for (let i = 1; i <= 3; i++) {
+                    document.getElementById(`servico${i}-preview`).style.display = 'none';
+                    document.getElementById(`servico${i}-url`).value = '';
+                    document.getElementById(`acabamento${i}-preview`).style.display = 'none';
+                    document.getElementById(`acabamento${i}-url`).value = '';
+                }
+                
+                document.getElementById('sobre-preview').style.display = 'none';
+                document.getElementById('sobre-url').value = '';
+                document.getElementById('galeria-preview').style.display = 'none';
+                document.getElementById('galeria-url').value = '';
+                loadCurrentGallery();
+                
+                localStorage.removeItem('starpools_changes');
+                showNotification('Conteúdo restaurado!');
+            }
+        }
+
+        function generateUpdatedSite() {
+            if (!siteTemplate) {
+                showNotification('Template do site não carregado. Recarregue a página.', true);
+                return;
+            }
+
+            let updatedSite = siteTemplate;
+
+            // Aplicar alterações de texto
+            Object.entries(changes.text).forEach(([target, newContent]) => {
+                const patterns = {
+                    // Hero
+                    'hero-title': /(<h1[^>]*>)([^<]*)(<\/h1>)/,
+                    'hero-subtitle': /(<p[^>]*>)(Projetos personalizados[^<]*)(<\/p>)/,
+                    'hero-btn-whatsapp': /(Solicitar Orçamento)/g,
+                    'hero-btn-galeria': /(Ver Projetos)/g,
+                    
+                    // Diferenciais
+                    'diferenciais-title': /(Excelência em Cada Projeto)/g,
+                    'diferenciais-desc': /(Construímos piscinas com técnicas avançadas)/g,
+                    'card1-title': /(Alvenaria Estrutural)/g,
+                    'card1-desc': /(Utilizamos alvenaria estrutural e concreto armado)/g,
+                    'card2-title': /(Projetos Personalizados)/g,
+                    'card2-desc': /(Cada piscina é única\. Desenvolvemos projetos exclusivos)/g,
+                    'card3-title': /(Acabamentos Premium)/g,
+                    'card3-desc': /(Oferecemos acabamentos em azulejo, pastilha de vidro)/g,
+                    
+                    // Acabamentos
+                    'acabamentos-title': /(Revestimentos de Alta Qualidade)/g,
+                    'acabamentos-desc': /(Oferecemos as melhores opções de acabamento)/g,
+                    
+                    // Sobre
+                    'sobre-title': /(Especialistas em Piscinas de Alvenaria)/g,
+                    'sobre-p1': /(Na Starpools, somos especialistas em criar projetos)/g,
+                    'sobre-p2': /(Nossa equipe de arquitetos e construtores)/g,
+                    'stat1-number': /(150\+)/g,
+                    'stat1-text': /(Clientes Satisfeitos)/g,
+                    'stat2-number': /(200\+)/g,
+                    'stat2-text': /(Projetos Concluídos)/g,
+                    'stat3-number': /(100%)/g,
+                    'stat3-text': /(Alvenaria e Concreto)/g,
+                    'stat4-number': /(10\+)/g,
+                    'stat4-text': /(Anos de Experiência)/g,
+                    
+                    // Depoimentos
+                    'depoimentos-title': /(O Que Nossos Clientes Dizem)/g,
+                    'depoimentos-desc': /(Confiança e qualidade comprovadas)/g,
+                    'depoimento1-texto': /(A Starpools superou nossas expectativas)/g,
+                    'depoimento1-nome': /(Ana Maria)/g,
+                    'depoimento1-cidade': /(Belo Horizonte)/g,
+                    'depoimento2-texto': /(O atendimento da Starpools foi excelente)/g,
+                    'depoimento2-nome': /(Carlos Silva)/g,
+                    'depoimento2-cidade': /(Nova Lima)/g,
+                    'depoimento3-texto': /(Profissionais extremamente competentes)/g,
+                    'depoimento3-nome': /(Mariana Pinto)/g,
+                    'depoimento3-cidade': /(Contagem)/g,
+                    
+                    // Contato
+                    'contato-title': /(Vamos Conversar Sobre Seu Projeto)/g,
+                    'contato-whatsapp': /(\+55 31 99856-2030)/g,
+                    'contato-email': /(contato@starpools\.com)/g,
+                    'contato-cidade': /(Belo Horizonte - MG)/g,
+                    'contato-regiao': /(Atendemos toda região metropolitana)/g,
+                    'contato-dias-uteis': /(Segunda a Sexta: 8h às 18h)/g,
+                    'contato-sabado': /(Sábado: 8h às 12h)/g
+                };
+                
+                if (patterns[target]) {
+                    updatedSite = updatedSite.replace(patterns[target], newContent);
+                }
+            });
+
+            // Aplicar alterações de imagens
+            Object.entries(changes.images).forEach(([targetId, newSrc]) => {
+                const imageSelectors = {
+                    // Serviços
+                    'servico1-img': 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=280,fit=crop/mePvqQEQO8S18ZOJ/imagem-000559-20220205-YD06q29oa2H44qOE.jpeg',
+                    'servico2-img': 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=280,fit=crop/mePvqQEQO8S18ZOJ/imagem-000846-20220205-m5KwZNykx6ugKK1d.jpeg',
+                    'servico3-img': 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=280,fit=crop/mePvqQEQO8S18ZOJ/imagem-000924-20220205-YZ9VOJ5QWMCKE4el.jpeg',
+                    
+                    // Acabamentos (usando placeholders - você pode substituir pelas URLs reais)
+                    'acabamento1-img': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%230a2540"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%232dd4bf" text-anchor="middle">Acabamento 1</text></svg>',
+                    'acabamento2-img': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%230a2540"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%232dd4bf" text-anchor="middle">Acabamento 2</text></svg>',
+                    'acabamento3-img': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%230a2540"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%232dd4bf" text-anchor="middle">Acabamento 3</text></svg>',
+                    
+                    // Sobre
+                    'sobre-img': 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><rect width="500" height="500" fill="%230a2540"/><text x="250" y="250" font-family="Arial" font-size="24" fill="%232dd4bf" text-anchor="middle">Imagem Sobre</text></svg>'
+                };
+                
+                if (imageSelectors[targetId]) {
+                    const regex = new RegExp(imageSelectors[targetId].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                    updatedSite = updatedSite.replace(regex, newSrc);
+                }
+            });
+
+            // Aplicar alterações da galeria
+            if (changes.gallery.length > 0) {
+                // Substituir imagens da galeria existentes
+                const galleryImages = [
+                    'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=396,fit=crop/mePvqQEQO8S18ZOJ/imagem-230119-20220204-mxBZaqQbrzta2BM1.jpeg',
+                    'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=396,fit=crop/mePvqQEQO8S18ZOJ/imagem-000449-20220205-dJo6w1VWGjczWVr1.jpeg',
+                    'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=396,fit=crop/mePvqQEQO8S18ZOJ/imagem-000333-20220205-Y4LVMqK9ODIkXLe1.jpeg'
+                ];
+                
+                changes.gallery.forEach((newImage, index) => {
+                    if (galleryImages[index]) {
+                        updatedSite = updatedSite.replace(new RegExp(galleryImages[index], 'g'), newImage);
+                    }
+                });
+            }
+
+            // Fazer download do site atualizado
+            const blob = new Blob([updatedSite], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index-atualizado.html';
+            a.click();
+            
+            showNotification('Site atualizado gerado com sucesso! Faça o download.');
+        }
+
+        function previewSite() {
+            window.open('./index.html', '_blank');
+        }
+
+        function backupSite() {
+            const blob = new Blob([siteTemplate], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup-site-${new Date().toISOString().split('T')[0]}.html`;
+            a.click();
+            
+            showNotification('Backup do site criado!');
+        }
+
+        function showNotification(message, isError = false) {
+            notification.textContent = message;
+            notification.style.background = isError ? '#ef4444' : '#2dd4bf';
+            notification.style.color = isError ? 'white' : '#0a2540';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Carregar alterações salvas ao iniciar
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedChanges = localStorage.getItem('starpools_changes');
+            if (savedChanges) {
+                changes = JSON.parse(savedChanges);
+                
+                // Aplicar textos salvos
+                editables.forEach(editor => {
+                    const target = editor.getAttribute('data-target');
+                    if (changes.text[target]) {
+                        editor.textContent = changes.text[target];
+                    }
+                });
+                
+                // Aplicar imagens salvas
+                Object.entries(changes.images).forEach(([targetId, imageUrl]) => {
+                    // Serviços
+                    if (targetId.startsWith('servico')) {
+                        const serviceNum = targetId.replace('servico', '').replace('-img', '');
+                        const preview = document.getElementById(`servico${serviceNum}-preview`);
+                        if (preview) {
+                            preview.src = imageUrl;
+                            preview.style.display = 'block';
+                            document.getElementById(`servico${serviceNum}-url`).value = imageUrl;
+                        }
+                    }
+                    // Acabamentos
+                    else if (targetId.startsWith('acabamento')) {
+                        const acabamentoNum = targetId.replace('acabamento', '').replace('-img', '');
+                        const preview = document.getElementById(`acabamento${acabamentoNum}-preview`);
+                        if (preview) {
+                            preview.src = imageUrl;
+                            preview.style.display = 'block';
+                            document.getElementById(`acabamento${acabamentoNum}-url`).value = imageUrl;
+                        }
+                    }
+                    // Sobre
+                    else if (targetId === 'sobre-img') {
+                        const preview = document.getElementById('sobre-preview');
+                        if (preview) {
+                            preview.src = imageUrl;
+                            preview.style.display = 'block';
+                            document.getElementById('sobre-url').value = imageUrl;
+                        }
+                    }
+                });
+                
+                // Carregar galeria
+                loadCurrentGallery();
+                
+                showNotification('Alterações anteriores carregadas!');
+            }
+        });
+
+        // Atalho de teclado (Ctrl+S para salvar)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveChanges();
+            }
+        });
+    </script>
+</body>
+</html>

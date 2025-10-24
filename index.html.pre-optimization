@@ -2,11 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Piscinas exclusivas em alvenaria estrutural e concreto armado. Acabamentos premium em azulejo, pastilha e pool plastering. Projetos personalizados em Alvenaria e região.">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starpools - Construção de Piscinas Exclusivas em Alvenaria | Belo Horizonte</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="description" content="Especialistas em projetos e construção de piscinas de alvenaria e concreto armado. Acabamentos em azulejo, pastilha e revestimento americano (pool plastering). Atendemos Belo Horizonte e região.">
     <meta name="keywords" content="piscina alvenaria, construção piscina, reforma piscina, pool plastering, piscina concreto, acabamento piscina">
     <meta name="author" content="Starpools">
@@ -1124,6 +1121,24 @@
         }
 
         /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: var(--transicao);
+        }
 
         .whatsapp-float:hover {
             transform: scale(1.1);
@@ -1165,6 +1180,26 @@
         }
 
         /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--azul-profundo);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(10, 37, 64, 0.3);
+            z-index: 999;
+            transition: var(--transicao);
+            opacity: 0;
+            visibility: hidden;
+        }
 
         .back-to-top.visible {
             opacity: 1;
@@ -1248,12 +1283,19 @@
                 margin-bottom: 0;
             }
 
+            .back-to-top {
+                bottom: 90px;
+                right: 20px;
+            }
 
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
-<main role="main">
     <!-- Loading Spinner -->
     <div class="loading-spinner" id="loadingSpinner">
         <div class="spinner"></div>
@@ -1290,18 +1332,14 @@
                 <h1>Piscinas Exclusivas em Alvenaria</h1>
                 <p>Projetos personalizados em alvenaria estrutural e concreto armado. Acabamentos premium em azulejo, pastilha e revestimento americano (pool plastering).</p>
                 <div class="hero-buttons">
-                    <a aria-label="Falar no WhatsApp" href="https://wa.me/5531998562030?text=Olá! Gostaria de um orçamento para piscina" class="btn-primary">
+                    <a href="https://wa.me/5531998562030?text=Olá! Gostaria de um orçamento para piscina" class="btn-primary">
                         <i class="fab fa-whatsapp"></i>
-                        WhatsApp
+                        Solicitar Orçamento
                     </a>
-                    <a aria-label="Ligar agora" href="tel:+5531998562030" class="btn-secondary" onclick="fetch('https://n8nbrno.com.br/webhook/48eb1074-6f1b-41bf-be6f-e77a23795a5e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:window.location.href,source:document.referrer||'Direto',device:/Mobile|Android|iPhone/i.test(navigator.userAgent)?'Mobile':'Desktop'})})">
-                        <i class="fas fa-phone"></i>
-                        Ligue Agora
+                    <a href="#galeria" class="btn-secondary">
+                        <i class="fas fa-images"></i>
+                        Ver Projetos
                     </a>
-                    <button onclick="openN8nChat()" class="btn-secondary" aria-label="Falar com IA">
-                        <i class="fas fa-robot"></i>
-                        IA Responde
-                    </button>
                 </div>
             </div>
         </div>
@@ -1580,7 +1618,7 @@
         <div class="container">
             <h2>Pronto para Transformar Seu Espaço?</h2>
             <p>Entre em contato e solicite um orçamento personalizado sem compromisso</p>
-            <a aria-label="Falar no WhatsApp" href="https://wa.me/5531998562030?text=Olá! Gostaria de um orçamento para piscina" class="btn-primary">
+            <a href="https://wa.me/5531998562030?text=Olá! Gostaria de um orçamento para piscina" class="btn-primary">
                 <i class="fab fa-whatsapp"></i>
                 Falar com Especialista
             </a>
@@ -1710,9 +1748,9 @@
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h3>Contato</h3>
+                    <h4>Contato</h4>
                     <ul>
-                        <li><a aria-label="Ligar agora" href="tel:+5531998562030">+55 31 99856-2030</a></li>
+                        <li><a href="tel:+5531998562030">+55 31 99856-2030</a></li>
                         <li><a href="mailto:contato@starpools.com">contato@starpools.com</a></li>
                         <li><a href="#contato">Orçamento</a></li>
                         <li><a href="#contato">Fale Conosco</a></li>
@@ -1726,8 +1764,14 @@
     </footer>
 
     <!-- WhatsApp Float -->
+    <a href="https://wa.me/5531998562030?text=Olá! Gostaria de um orçamento para piscina" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Back to Top -->
+    <a href="#home" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
 
     <script>
         // Menu mobile toggle
@@ -1897,69 +1941,48 @@
             });
         }
     </script>
-</main>
-<script src="chat-trigger.js"></script>
-<style>
-/* Reposicionar botão do chat n8n */
-[data-key] {
-  position: fixed !important;
-  bottom: 220px !important;
-  right: 30px !important;
-  width: 70px !important;
-  height: 70px !important;
-  z-index: 9998 !important;
-}
-</style>
-<script>
-</script>
-<script>
-function openN8nChat() {
-  // Rolar até o final da página onde o chat está
-  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  
-  // Aguardar 1 segundo e tentar abrir o chat
-  setTimeout(() => {
-    // Procurar o iframe do n8n
-    const iframe = document.querySelector("iframe");
-    if (iframe) {
-      // Simular hover/click no iframe para ativar o chat
-      iframe.style.pointerEvents = "auto";
-      const evt = new MouseEvent("click", { bubbles: true, cancelable: true });
-      iframe.dispatchEvent(evt);
-    }
-    
-    // Mostrar notificação visual
-    const notify = document.createElement("div");
-    notify.textContent = "💬 Chat aberto no final da página!";
-    notify.style.cssText = "position:fixed;top:20px;right:20px;background:#2563eb;color:white;padding:15px 25px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:10000;font-family:sans-serif;";
-    document.body.appendChild(notify);
-    setTimeout(() => notify.remove(), 3000);
-  }, 1000);
-}
-</script>
-<link rel="stylesheet" href="chatbot-styles.css">
-<!-- Chatbot IA Container -->
-<div id="chatbotContainer" class="chatbot-container">
-    <div class="chatbot-header">
-        <h3><i class="fas fa-robot"></i> IA Responde - Starpools</h3>
-        <button id="closeChatbot" class="chatbot-close">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <div class="chatbot-frame">
-        <iframe 
-            id="chatbotIframe"
-            src="https://n8nbrno.com.br/webhook/ff680eb5-09c8-4ecd-a50b-03effe7e8177/chat" 
-            frameborder="0"
-            allow="microphone"
-            style="width: 100%; height: 100%; border: none;">
-        </iframe>
-    </div>
-</div>
-<script src="chatbot-script.js"></script>
 </body>
 </html>
 
+<!-- Widget Chatbot n8n -->
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+  
+  createChat({
+    webhookUrl: 'http://n8n.147.93.179.219.nip.io/webhook/ff680eb5-09c8-4ecd-a50b-03effe7e8177/chat',
+    initialMessages: [
+      'Olá! 👋 Bem-vindo à Starpools!',
+      'Somos especialistas em piscinas exclusivas em alvenaria. Como posso ajudar você hoje?'
+    ],
+    i18n: {
+      en: {
+        title: 'Starpools - Atendimento',
+        subtitle: 'Pergunte sobre nossas piscinas!',
+        footer: '',
+        getStarted: 'Iniciar conversa',
+        inputPlaceholder: 'Digite sua mensagem...',
+      },
+    },
+  });
+</script>
 
 <!-- Botão de Ligação Flutuante -->
+<a href="tel:+5531998562030" id="call-button" style="position:fixed;bottom:100px;right:24px;background:#25D366;color:white;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 6px rgba(0,0,0,0.3);z-index:1000;text-decoration:none;transition:all 0.3s;">
+  <svg xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+  </svg>
+</a>
 
+<script>
+document.getElementById("call-button").addEventListener("click", function() {
+  fetch("http://n8n.147.93.179.219.nip.io/webhook/48eb1074-6f1b-41bf-be6f-e77a23795a5e", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      page: window.location.href,
+      source: document.referrer || "Direto",
+      device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? "Mobile" : "Desktop"
+    })
+  });
+});
+</script>

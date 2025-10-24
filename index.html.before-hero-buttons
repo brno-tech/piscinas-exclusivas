@@ -1294,14 +1294,10 @@
                         <i class="fab fa-whatsapp"></i>
                         WhatsApp
                     </a>
-                    <a aria-label="Ligar agora" href="tel:+5531998562030" class="btn-secondary" onclick="fetch('https://n8nbrno.com.br/webhook/48eb1074-6f1b-41bf-be6f-e77a23795a5e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:window.location.href,source:document.referrer||'Direto',device:/Mobile|Android|iPhone/i.test(navigator.userAgent)?'Mobile':'Desktop'})})">
-                        <i class="fas fa-phone"></i>
-                        Ligue Agora
+                    <a href="#galeria" class="btn-secondary">
+                        <i class="fas fa-images"></i>
+                        Ver Projetos
                     </a>
-                    <button onclick="openN8nChat()" class="btn-secondary" aria-label="Falar com IA">
-                        <i class="fas fa-robot"></i>
-                        IA Responde
-                    </button>
                 </div>
             </div>
         </div>
@@ -1910,56 +1906,29 @@
   z-index: 9998 !important;
 }
 </style>
-<script>
-</script>
-<script>
-function openN8nChat() {
-  // Rolar até o final da página onde o chat está
-  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  
-  // Aguardar 1 segundo e tentar abrir o chat
-  setTimeout(() => {
-    // Procurar o iframe do n8n
-    const iframe = document.querySelector("iframe");
-    if (iframe) {
-      // Simular hover/click no iframe para ativar o chat
-      iframe.style.pointerEvents = "auto";
-      const evt = new MouseEvent("click", { bubbles: true, cancelable: true });
-      iframe.dispatchEvent(evt);
-    }
-    
-    // Mostrar notificação visual
-    const notify = document.createElement("div");
-    notify.textContent = "💬 Chat aberto no final da página!";
-    notify.style.cssText = "position:fixed;top:20px;right:20px;background:#2563eb;color:white;padding:15px 25px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:10000;font-family:sans-serif;";
-    document.body.appendChild(notify);
-    setTimeout(() => notify.remove(), 3000);
-  }, 1000);
-}
-</script>
-<link rel="stylesheet" href="chatbot-styles.css">
-<!-- Chatbot IA Container -->
-<div id="chatbotContainer" class="chatbot-container">
-    <div class="chatbot-header">
-        <h3><i class="fas fa-robot"></i> IA Responde - Starpools</h3>
-        <button id="closeChatbot" class="chatbot-close">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <div class="chatbot-frame">
-        <iframe 
-            id="chatbotIframe"
-            src="https://n8nbrno.com.br/webhook/ff680eb5-09c8-4ecd-a50b-03effe7e8177/chat" 
-            frameborder="0"
-            allow="microphone"
-            style="width: 100%; height: 100%; border: none;">
-        </iframe>
-    </div>
-</div>
-<script src="chatbot-script.js"></script>
 </body>
 </html>
 
+<!-- Widget Chatbot n8n -->
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+  
+  createChat({
+    webhookUrl: 'https://n8nbrno.com.br/webhook/ff680eb5-09c8-4ecd-a50b-03effe7e8177/chat',
+    initialMessages: [
+      'Olá! 👋 Bem-vindo à Starpools!',
+      'Somos especialistas em piscinas exclusivas em alvenaria. Como posso ajudar você hoje?'
+    ],
+    i18n: {
+      en: {
+        title: 'Starpools - Atendimento',
+        subtitle: 'Pergunte sobre nossas piscinas!',
+        footer: '',
+        getStarted: 'Iniciar conversa',
+        inputPlaceholder: 'Digite sua mensagem...',
+      },
+    },
+  });
+</script>
 
 <!-- Botão de Ligação Flutuante -->
-

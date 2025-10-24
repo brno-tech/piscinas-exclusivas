@@ -153,17 +153,6 @@
             background: #f0f9ff;
         }
 
-        .image-upload {
-            margin-top: 1rem;
-        }
-
-        .image-preview {
-            max-width: 300px;
-            margin-top: 1rem;
-            border-radius: 5px;
-            display: none;
-        }
-
         .btn {
             background: var(--azul-profundo);
             color: var(--branco);
@@ -405,21 +394,6 @@
                     <div class="editable-group">
                         <label>Card 3 - Descrição</label>
                         <div class="editable" data-target=".cards-grid .card:nth-child(3) p">Oferecemos acabamentos em azulejo, pastilha de vidro e revestimento monolítico americano (pool plastering).</div>
-                    </div>
-                </div>
-
-                <!-- Serviços Section -->
-                <div id="servicos-section" class="content-section">
-                    <h2 class="section-title">Seção Serviços</h2>
-                    
-                    <div class="editable-group">
-                        <label>Título da Seção</label>
-                        <div class="editable" data-target=".servicos .section-title">O Que Fazemos</div>
-                    </div>
-
-                    <div class="editable-group">
-                        <label>Descrição da Seção</label>
-                        <div class="editable" data-target=".servicos .section-description">Soluções completas em construção e reforma de piscinas de alvenaria</div>
                     </div>
                 </div>
 
